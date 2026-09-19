@@ -1,262 +1,188 @@
 import random
 import time
 
-print("\n\n")
-PlayerName = input("Enter your name: ")
-time.sleep(0.5)
-player_hp = 100
-max_player_hp = 100
-player_attack = 20
-player_defense = 10
-Potions = 3
-potions_heal = 20
-xp = 0
-level = 1
-now_defense = player_defense
-
-
-print("\n\n")
-print("===============================")
-print("      DUNGEON OF SHADOWS       ")
-print("===============================")
-time.sleep(1)
-print("\n\n")
-print(f"Player: {PlayerName}\n")
-print(f"HP: {player_hp}\n")
-print(f"Attack: {player_attack}\n")
-print(f"Defense: {player_defense}\n")
-print(f"level: {level}\n")
-
-
-
-Goblin = {"name": "Goblin", "hp": 40, "attack": 10, "defense": 5}
-Orc = {"name": "Orc", "hp": 60, "attack": 15, "defense": 8}
-Skeleton = {"name": "Skeleton", "hp": 50, "attack": 12, "defense": 6}
-Dark_Knight = {"name": "Dark_Knight", "hp": 80, "attack": 20, "defense": 12}
-Dragon = {"name": "Dragon", "hp": 350, "attack": 40, "defense": 30}
-
-
+player = {"name": input("Enter your name: "), "hp": 100,
+          "max_hp": 100, "attack": 20,
+            "defense": 10, "xp": 0,
+            "potions": 3, "potion_capacity": 20
+            , "level": 1, "base_defense" : 10}
+Goblin = {"name": "Goblin", "hp": 40, "attack": 10, "defense": 5, "base_defense": 5, "xp": 40}
+Orc = {"name": "Orc", "hp": 60, "attack": 15, "defense": 8,"base_defense": 5, "xp": 100}
+Skeleton = {"name": "Skeleton", "hp": 50, "attack": 12, "defense": 6,"base_defense": 6, "xp": 75}
+Dark_Knight = {"name": "Dark_Knight", "hp": 80, "attack": 20, "defense": 12, "base_defense": 12, "xp": 150}
+Dragon = {"name": "Dragon", "hp": 350, "attack": 40, "defense": 30, "base_defense": 30, "xp": 450}
 normal_enemies = [Goblin, Orc, Skeleton, Dark_Knight]
-enemy_actions = ["attack", "defend"]
 
-time.sleep(3.5)
-print("\nYou walk deeper into the dungeon...\n")
-while True:
-   random_enemy = random.choice(normal_enemies)
-   if random_enemy != Dragon:
-      break
+time.sleep(0.5)
 
+def game_start(player_stats,enemy_stats):
 
-time.sleep(2.5)
-if random_enemy != Orc:
-   print("You encounter a " + random_enemy["name"] + "!")
-else:
-   print("You encounter an " + random_enemy["name"] + "!")
-
-time.sleep(2)
-
-now_enemy_hp = random_enemy["hp"]
-now_enemy_defense = random_enemy["defense"]
-
-def game():
-  global player_hp, now_enemy_hp, player_attack, player_defense, Potions, potions_heal, xp, level, now_defense, now_enemy_defense
-  while player_hp > 0 and now_enemy_hp > 0:
-      print("\n\n")
-      print(f"{random_enemy['name']} HP: {now_enemy_hp}\n")
-      print(f"{random_enemy['name']} Attack: {random_enemy['attack']}\n") 
-      print(f"{random_enemy['name']} Defense: {now_enemy_defense}\n")
-      print("\n\n")
-      time.sleep(2.5)
 
       
-      print("What will you do?\n")
-      print("1. Attack\n")
-      print("2. Defend\n")
-      print("3. Use Potion\n")
-      print("4. hit him from behind\n")
-      print("\n\n")
+      print("\n\n===============================")
+      print("      DUNGEON OF SHADOWS       ")
+      print("===============================\n\n")
+      time.sleep(1)
+      
+      showing_player_stats(player_stats)
+      print("\nYou walk deeper into the dungeon...\n\n")
+      time.sleep(1.5)
+      print("There were huge, very large, vigorous shadows.\n\n")
+      time.sleep(1.5)
+      print("You encounter a " + enemy_stats["name"] + "!") if enemy_stats != Orc else print("You encounter an " + enemy_stats["name"] + "!")
+      time.sleep(1.5)
+def create_enemy(template):
+      
+      return {
+            "name": template["name"],
+            "hp": template["hp"],
+            "attack": template["attack"],
+            "defense": template["defense"],
+            "xp": template["xp"],
+            "base_defense": template["base_defense"]
+      }
 
-      input_choice = input("Enter your choice (1-4): ")
-      print("\n\n")
-      match input_choice:
-            case "1":
-                  damage = player_attack - now_enemy_defense
-                  if damage < 0:
-                        damage = 0
+def showing_player_stats(player_stats):
+      print(f"\n\nPlayer: {player_stats["name"]}\n")
+      print(f"HP: {player_stats["hp"]}\n")
+      print(f"Attack: {player_stats["attack"]}\n")
+      print(f"Defense: {player_stats["defense"]}\n")
+      print(f"level: {player_stats["level"]}\n")
+      time.sleep(2)     
 
-                  now_enemy_hp -= damage
-                  print(f"the enemy shield absorbs {now_enemy_defense} damage from your attack!")
-                  print(f"You attack the {random_enemy['name']} for {damage} damage!")
-                  print("\n\n")
-                  time.sleep(2)
-                  if now_enemy_hp <= 0:
-                        break
-                  now_enemy_defense = random_enemy["defense"]
-            case "2":
-                  print("You defend against the enemy's attack using the shield!")
-                  print("\n\n")
-                  time.sleep(2)
-                  print("Defense: 10--> 20")
-                  now_defense = player_defense
-                  now_defense = player_defense + 10
-                  print("\n\n")
-            case "3":
-                  if Potions > 0:
-                   if player_hp < max_player_hp:
-                        player_hp += potions_heal
-                        if player_hp > max_player_hp:
-                              player_hp = max_player_hp
-                        Potions -= 1
-                        print(f"You used a potion and restored 20 HP! Current HP: {player_hp}")
-                        print("\n\n")
-                        time.sleep(2)
-                   elif player_hp == max_player_hp:
-                        print("Your HP is already full! You cannot use a potion.")
-                        print("\n\n")
-                        time.sleep(2)
-                  else:
-                   print("You have no potions left!")
-                   print("\n\n")
-                   time.sleep(2)
-                  
-            case "4":
-                  print("You attempt to escape...")
+def showing_enemy_stats(enemy_stats):
+     print(f"\n\nHP: {enemy_stats['hp']}")
+     print(f"Attack: {enemy_stats['attack']}")
+     print(f"Defense: {enemy_stats['defense']}\n\n")
+
+def player_turn(choice, player_stats, enemy_stats):
+      match choice:
+            case '1':
+                  damage =  player_stats['attack'] - enemy_stats['defense']
+                  if damage < 0: damage = 0
+                  enemy_stats['hp'] -= damage
+                  if enemy_stats['hp'] <= 0:
+                        enemy_stats['hp'] = 0
+                  print(f"You dealt {damage} damage to the enemy!\n\n")
+            case '2':
+                  print("You defend against the enemy's attack using the shield!\n\n")
+                  print("defense 10 --> 20\n\n")
+                  player_stats['defense'] += 10
+
+            case '3':
+                  if player_stats['potions'] > 0:
+                        if player_stats['hp'] == player_stats['max_hp']: print("You are already at full health!\n\n")
+
+                        else: 
+                              print(f"You have used a pation now you have {player_stats['potions']} potions\n\n")
+                              player_stats['potions'] -= 1
+                              player_stats['hp'] += player_stats['potion_capacity']
+                              if player_stats['hp'] > player_stats['max_hp']: player_stats['hp'] = player_stats['max_hp']
+                              print(f"Your health is now {player_stats['hp']}\n\n")
+
+            case '4':
+                  print("You attempt to hit him from behind the back!...\n\n")
                   print("\n\n")
                   time.sleep(2)
                   if random.random() < 0.5:
-                        print("You successfully escaped!")
-                        print("\n\n")
-                        time.sleep(2)
-                        print("you hit him from the back dealing true damage!")
-                        now_enemy_hp -= player_attack
-                        print(f"You attack the {random_enemy['name']} for {player_attack} true damage!")
-                        print("\n\n")
+                        print("You hit him from behind the back!\n\n")
+                        damage = player_stats['attack']
+                        enemy_stats['hp'] -= damage
+                        print(f"You dealt {damage} damage!\n\n")
                   else:
-                        print("You failed to escape! The enemy attacks you!")
-                        print("\n\n")
-                        time.sleep(2)
-                        damage = random_enemy["attack"] - player_defense
-                        player_hp -= damage
-                        print(f"The {random_enemy['name']} attacks you for {damage} damage! Current HP: {player_hp}")
-                        time.sleep(2)
-      
-      print(f"{random_enemy['name']}'s turn")
-      print("\n\n")
-      time.sleep(2)
-      action = random.choice(enemy_actions)
-      if action == "attack":
-            damage = random_enemy["attack"] - now_defense
+                        print("You missed!\n\nThe enemy attacks you!\n\n")
+                        damage = enemy_stats['attack']
+                        player_stats['hp'] -= damage
+                        print(f"You took {damage} damage!\n\n")
+
+def enemy_turn(player_stats, enemy_stats):
+      print("enemy's turn!\n\n")
+      if random.random() > 0.5:
+            print("The enemy is attacking you")
+            damage = enemy_stats['attack'] - player_stats['defense']
             if damage < 0:
                   damage = 0
-            player_hp -= damage
-            print(f"The {random_enemy['name']} attacks you for {damage} damage! Current HP: {player_hp}")
-            print("\n\n")
-            time.sleep(2)
-      elif action == "defend":
-            print(f"The {random_enemy['name']} defends against your attack!")
-            print("\n\n")
-            time.sleep(2)
-            print("enemy Defense increases by 5 only for the next turn!")
-            now_defense = player_defense
-            now_enemy_defense = random_enemy["defense"] + 5
-            print("\n\n")
-      time.sleep(2)
+            print(f"He dealt {damage} damage\n\n")
+            player_stats['hp'] -= damage
+            if player_stats['hp'] <= 0:
+                  player_stats['hp'] = 0
 
-def game_over():
-      global xp, level, player_attack, player_defense, max_player_hp, Potions, potions_heal
-      print("\n\n")
-      if player_hp <= 0:
-            print("You have been defeated! Game Over.")
-            print("\n\n")
-            time.sleep(2)
       else:
-      
-       print("===============================")
-       print("       VICTORY! YOU WIN!       ")
-       print("===============================")
-       print("\n\n")
-       time.sleep(2)
-       if random_enemy == Goblin:
-            xp += 40
-       elif random_enemy == Orc:
-            xp += 100
-       elif random_enemy == Skeleton:
-            xp += 75
-       elif random_enemy == Dark_Knight:
-            xp += 150
-       print(f"You gained {xp} XP!")
-       new_level = xp // 100 + 1
-       if new_level > level:
-            level = new_level
-            print(f"You leveled up! You are now level {level}!")
+            print("The enemy choses to defend!\n\n")
+            print(f"The enemy's defense is now {enemy_stats['defense']+10}")
+            enemy_stats['defense'] += 10
+
+def game_loop(player_stats, enemy_stats):
+      while player_stats['hp'] > 0 and enemy_stats['hp'] > 0:
+            print("What will you do?\n")
+            print("1. Attack\n")
+            print("2. Defend\n")
+            print("3. Use Potion\n")
+            print("4. hit him from behind\n")
+            choice = input()
+            while choice not in ['1', '2', '3', '4']:
+                  print("Invalid choice. Please choose again")
+                  choice = input()
+            
+            player_turn(choice, player_stats, enemy_stats)
+            enemy_stats['defense'] = enemy_stats['base_defense']
+            enemy_turn(player_stats, enemy_stats)
+            player_stats['defense'] = player_stats['base_defense']
+            showing_player_stats(player_stats)
+            showing_enemy_stats(enemy_stats)
+
+def finish_game(player_stats, enemy_stats):
+
+       if player_stats['hp'] <= 0:
+             print("Game Over! You have been defeated!\n\n")
+       else:
+             print("===============================")
+             print("       VICTORY! YOU WIN!       ")
+             print("===============================")
+             print("\n\n")
+             time.sleep(2)
+             leveling_up(player_stats, enemy_stats['xp'])
+
+       print("Do you wanna play again? y/n")
+       choice = input()
+       while choice not in ['y', 'n']:
+            print("Invalid choice. Please choose again")
+            choice = input()
+       if choice == 'y':
+            print("do you wanna face the boss? y/n")
+            choice = input()
+            while choice not in ['y', 'n']:
+                  print("Invalid choice. Please choose again")
+                  choice = input()
+            if choice == 'y':
+                 template = create_enemy(Dragon)
+            else:
+                 template = create_enemy(random.choice(normal_enemies))
+            return template
+       else:
+            print("game is closing...")
             time.sleep(2)
-            print("you can now choose to increase your stats!")
-            time.sleep(2)
-            print("1. Increase Attack by 5")
-            print("2. Increase Defense by 5")
-            print("3. Increase maximum HP by 20")
-            print("4. Increase Potions by 1 and capacity to 10")
-            print("\n\n")
-            stat_choice = input("Enter your choice (1-4): ")
-            match stat_choice:
-                  case "1":
-                        player_attack += 5
-                        print(f"Your Attack has increased to {player_attack}!")
-                        print("\n\n")
-                        time.sleep(2)
-                  case "2":
-                        player_defense += 5
-                        print(f"Your Defense has increased to {player_defense}!")
-                        print("\n\n")
-                        time.sleep(2)
-                  case "3":
-                        max_player_hp += 20
-                        print(f"Your max HP has increased to {max_player_hp}!")
-                        print("\n\n")
-                        time.sleep(2)
-                  case "4":
-                        Potions += 1
-                        potions_heal += 20
-                        print(f"You now have {Potions} potions!")
-                        print("\n\n")
-                        time.sleep(2)
-game()
-game_over()
-print("do you want to play again? (y/n)")
-play_again = input().lower()
-if play_again == "y":
-      print("Starting a new game...")
-      print("\n\n")
-      time.sleep(2)
-      print("You restore 20 HP for the new game!")
-      print("\n\n")
-      time.sleep(2)
-      player_hp = player_hp + 20
-      if player_hp > max_player_hp:
-            player_hp = max_player_hp
-            print("\n\n")
-      now_enemy_hp = random_enemy["hp"]
-      print("do you want to fight the Boss? (y/n)")
-      if input().lower() == "n":
-            game()
-      else:
-            random_enemy = Dragon
-            now_enemy_hp = random_enemy["hp"]
-            print("\n\n")
-            print("You encounter the Dragon!")
-            print("\n\n")
-            time.sleep(2)
-            print("The Dragon is a formidable foe with high HP, attack, and defense!")
-            time.sleep(2)
-            print("\n\n")
-            print("Prepare for a tough battle!")
-            time.sleep(2)
-            print("\n\n")
-            print("================================")
-            print("           BOSS FIGHT!          ")
-            print("================================")
-            game()
-else:
-      print("Thanks for playing!")
-      time.sleep(2)
-      exit()
+            return None
+       exit()
+                        
+def leveling_up(player_stats,xp):
+      print(f"Congratulations! You have won {xp} XP!")
+      player_stats['xp'] += xp
+      new_level = player_stats['xp'] // 100 + 1
+      if new_level > player_stats['level']:
+            player_stats['level'] = new_level
+            print(f"Your new level is {player_stats['level']}!")
+            player_stats['max_hp'] += 150
+            player_stats['attack'] += 30
+            player_stats['defense'] += 20
+            player_stats['base_defense'] +=20
+            player_stats['potion_capacity'] += 10
+            print("All your stats has increased and enhanced!!")
+
+temp = create_enemy(random.choice(normal_enemies))
+while temp!=None:
+    game_start(player,temp)
+    showing_enemy_stats(temp)
+    game_loop(player, temp)
+    temp = finish_game(player,temp)
+print("thanks for playing")
