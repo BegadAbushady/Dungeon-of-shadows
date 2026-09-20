@@ -36,7 +36,6 @@ def game_start(player_stats,enemy_stats):
       print("You encounter a " + enemy_stats["name"] + "!") if enemy_stats != Orc else print("You encounter an " + enemy_stats["name"] + "!")
       time.sleep(1.5)
 
-      
 def create_enemy(template):
       #creating a template of the chosen enemy
       #important for not changing the standard enemy values
@@ -57,8 +56,7 @@ def showing_player_stats(player_stats):
       print(f"Attack: {player_stats["attack"]}\n")
       print(f"Defense: {player_stats["defense"]}\n")
       print(f"level: {player_stats["level"]}\n")
-      time.sleep(2)     
-      
+      time.sleep(2)    
 
 def showing_enemy_stats(enemy_stats):
      #it shows the enemy stats on the screen
@@ -181,7 +179,6 @@ def finish_game(player_stats, enemy_stats):
             print("game is closing...")
             time.sleep(2)
             return None
-
                                     
 def leveling_up(player_stats,xp):
       #this function controls leveling up logic
@@ -198,10 +195,11 @@ def leveling_up(player_stats,xp):
             player_stats['potion_capacity'] += 10
             print("All your stats has increased and enhanced!!")
 
-temp = create_enemy(random.choice(normal_enemies))
-while temp!=None: #the loop continues till the player choses to end the game
-    game_start(player,temp)
-    showing_enemy_stats(temp)
-    game_loop(player, temp)
-    temp = finish_game(player,temp)
-print("thanks for playing")
+def main():
+      temp = create_enemy(random.choice(normal_enemies))
+      while temp!=None: #the loop continues till the player choses to end the game
+            game_start(player,temp)
+            showing_enemy_stats(temp)
+            game_loop(player, temp)
+            temp = finish_game(player,temp)
+      print("thanks for playing")
