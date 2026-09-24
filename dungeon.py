@@ -177,6 +177,7 @@ def finish_game(player_stats, enemy_stats):
             return template
        else:
             print("game is closing...")
+            print("thanks for playing")
             time.sleep(2)
             return None
                                     
@@ -202,4 +203,4 @@ def main():
             showing_enemy_stats(temp)
             game_loop(player, temp)
             temp = finish_game(player,temp)
-      print("thanks for playing")
+      
